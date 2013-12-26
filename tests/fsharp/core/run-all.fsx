@@ -110,8 +110,8 @@ check "math/measures/test.fsx" Core_genericMeasures.RUN
 #load "control/test.fsx"
 check "control/test.fsx" Core_control.RUN
 
-#load "controlChamenos/test.fsx"
-check "controlChamenos/test.fsx" Core_controlChamenos.RUN
+// #load "controlChamenos/test.fsx"
+// check "controlChamenos/test.fsx" Core_controlChamenos.RUN
 
 #load "controlMailbox/test.fsx"
 check "controlMailbox/test.fsx" Core_controlMailBox.RUN
@@ -122,11 +122,11 @@ check "controlMailbox/test.fsx" Core_controlMailBox.RUN
 
 
 // FAILED: https://github.com/fsharp/fsharp/issues/183
-// #load "queriesOverIEnumerable/test.fsx"
-// #load "queriesOverIQueryable/test.fsx"
+#load "queriesOverIEnumerable/test.fsx"
+#load "queriesOverIQueryable/test.fsx"
 // 
-// check "queriesOverIEnumerable/test.fsx" Core_queriesOverIEnumerable.RUN
-// check "queriesOverIQueryable/test.fsx" Core_queriesOverIQueryable.RUN
+check "queriesOverIEnumerable/test.fsx" Core_queriesOverIEnumerable.RUN
+check "queriesOverIQueryable/test.fsx" Core_queriesOverIQueryable.RUN
 
 // FAILED (repro1, repro2)
 //
@@ -140,13 +140,13 @@ check "controlMailbox/test.fsx" Core_controlMailBox.RUN
 
 // FAILED - https://github.com/fsharp/fsharp/issues/186
 //
-// #load "int32/test.fsx" 
-// check "int32" Core_int32.RUN
+#load "int32/test.fsx" 
+check "int32" Core_int32.RUN
 
 // FAILED (repro6, https://github.com/fsharp/fsharp/issues/187)
 //
-// #load "attributes/test.fsx"
-// check "attributes" Core_attributes.RUN
+#load "attributes/test.fsx"
+check "attributes" Core_attributes.RUN
 
 // FAILS - takes too long
 //
