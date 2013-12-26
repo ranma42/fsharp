@@ -22,6 +22,15 @@ namespace Microsoft.FSharp.Collections
     [<RequireQualifiedAccess>]
     module Array = 
 
+        /// <summary>For internal use only</summary>
+        module (* internal *) ErrorStrings =
+
+            [<CompilerMessage("This value is for use by compiled F# code and should not be used directly", 1204, IsHidden=true)>]
+            val ArraysHadDifferentLengths : string
+
+            [<CompilerMessage("This value is for use by compiled F# code and should not be used directly", 1204, IsHidden=true)>]
+            val KeyNotFoundAlt : string
+
         /// <summary>Builds a new array that contains the elements of the first array followed by the elements of the second array.</summary>
         /// <param name="array1">The first input array.</param>
         /// <param name="array2">The second input array.</param>
@@ -93,7 +102,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array">The input array.</param>
         /// <returns>The first transformed element that is <c>Some(x)</c>.</returns>
         [<CompiledName("TryPick")>]
-        val tryPick: chooser:('T -> 'U option) -> array:'T[] -> 'U option
+        val inline tryPick: chooser:('T -> 'U option) -> array:'T[] -> 'U option
 
         /// <summary>Fills a range of elements of the array with the given value.</summary>
         /// <param name="target">The target array.</param>
@@ -112,7 +121,7 @@ namespace Microsoft.FSharp.Collections
         /// <c>chooser</c> is <c>None</c>.</exception>
         /// <returns>The first result.</returns>
         [<CompiledName("Pick")>]
-        val pick: chooser:('T -> 'U option) -> array:'T[] -> 'U 
+        val inline pick: chooser:('T -> 'U option) -> array:'T[] -> 'U
 
         /// <summary>Applies the given function to each element of the array. Returns
         /// the array comprised of the results "x" for each element where
@@ -121,7 +130,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array">The input array.</param>
         /// <returns>The array of results.</returns>
         [<CompiledName("Choose")>]
-        val choose: chooser:('T -> 'U option) -> array:'T[] -> 'U[]
+        val inline choose: chooser:('T -> 'U option) -> array:'T[] -> 'U[]
 
         /// <summary>Returns an empty array of the given type.</summary>
         [<GeneralizableValue>]
@@ -137,7 +146,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array">The input array.</param>
         /// <returns>True if any result from <c>predicate</c> is true.</returns>
         [<CompiledName("Exists")>]
-        val exists: predicate:('T -> bool) -> array:'T[] -> bool
+        val inline exists: predicate:('T -> bool) -> array:'T[] -> bool
 
         /// <summary>Tests if any pair of corresponding elements of the arrays satisfies the given predicate.</summary>
         ///
@@ -151,7 +160,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array2">The second input array.</param>
         /// <returns>True if any result from <c>predicate</c> is true.</returns>
         [<CompiledName("Exists2")>]
-        val exists2: predicate:('T1 -> 'T2 -> bool) -> array1:'T1[] -> array2:'T2[] -> bool
+        val inline exists2: predicate:('T1 -> 'T2 -> bool) -> array1:'T1[] -> array2:'T2[] -> bool
 
         /// <summary>Returns a new collection containing only the elements of the collection
         /// for which the given predicate returns "true".</summary>
@@ -169,7 +178,7 @@ namespace Microsoft.FSharp.Collections
         /// never returns true.</exception>
         /// <returns>The first element for which <c>predicate</c> returns true.</returns>
         [<CompiledName("Find")>]
-        val find: predicate:('T -> bool) -> array:'T[] -> 'T
+        val inline find: predicate:('T -> bool) -> array:'T[] -> 'T
 
         /// <summary>Returns the index of the first element in the array
         /// that satisfies the given predicate. Raise <c>KeyNotFoundException</c> if 
@@ -180,7 +189,7 @@ namespace Microsoft.FSharp.Collections
         /// never returns true.</exception>
         /// <returns>The index of the first element in the array that satisfies the given predicate.</returns>
         [<CompiledName("FindIndex")>]
-        val findIndex: predicate:('T -> bool) -> array:'T[] -> int
+        val inline findIndex: predicate:('T -> bool) -> array:'T[] -> int
 
         /// <summary>Tests if all elements of the array satisfy the given predicate.</summary>
         ///
@@ -191,7 +200,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array">The input array.</param>
         /// <returns>True if all of the array elements satisfy the predicate.</returns>
         [<CompiledName("ForAll")>]
-        val forall: predicate:('T -> bool) -> array:'T[] -> bool
+        val inline forall: predicate:('T -> bool) -> array:'T[] -> bool
 
 
         /// <summary>Tests if all corresponding elements of the array satisfy the given predicate pairwise.</summary>
@@ -207,7 +216,7 @@ namespace Microsoft.FSharp.Collections
         /// <exception cref="System.ArgumentException">Thrown when the input arrays differ in length.</exception>
         /// <returns>True if all of the array elements satisfy the predicate.</returns>
         [<CompiledName("ForAll2")>]
-        val forall2: predicate:('T1 -> 'T2 -> bool) -> array1:'T1[] -> array2:'T2[] -> bool
+        val inline forall2: predicate:('T1 -> 'T2 -> bool) -> array1:'T1[] -> array2:'T2[] -> bool
 
         /// <summary>Applies a function to each element of the collection, threading an accumulator argument
         /// through the computation. If the input function is <c>f</c> and the elements are <c>i0...iN</c> then computes 
@@ -217,7 +226,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array">The input array.</param>
         /// <returns>The final state.</returns>
         [<CompiledName("Fold")>]
-        val fold<'T,'State> : folder:('State -> 'T -> 'State) -> state:'State -> array: 'T[] -> 'State
+        val inline fold<'T,'State> : folder:('State -> 'T -> 'State) -> state:'State -> array: 'T[] -> 'State
 
         /// <summary>Applies a function to each element of the array, threading an accumulator argument
         /// through the computation. If the input function is <c>f</c> and the elements are <c>i0...iN</c> then computes 
@@ -227,7 +236,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="state">The initial state.</param>
         /// <returns>The final state.</returns>
         [<CompiledName("FoldBack")>]
-        val foldBack<'T,'State> : folder:('T -> 'State -> 'State) -> array:'T[] -> state:'State -> 'State
+        val inline foldBack<'T,'State> : folder:('T -> 'State -> 'State) -> array:'T[] -> state:'State -> 'State
 
         /// <summary>Applies a function to pairs of elements drawn from the two collections, 
         /// left-to-right, threading an accumulator argument
@@ -241,7 +250,7 @@ namespace Microsoft.FSharp.Collections
         /// <exception cref="System.ArgumentException">Thrown when the input arrays differ in length.</exception>
         /// <returns>The final state.</returns>
         [<CompiledName("Fold2")>]
-        val fold2<'T1,'T2,'State>  : folder:('State -> 'T1 -> 'T2 -> 'State) -> state:'State -> array1:'T1[] -> array2:'T2[] -> 'State
+        val inline fold2<'T1,'T2,'State>  : folder:('State -> 'T1 -> 'T2 -> 'State) -> state:'State -> array1:'T1[] -> array2:'T2[] -> 'State
 
         /// <summary>Apply a function to pairs of elements drawn from the two collections, right-to-left, 
         /// threading an accumulator argument through the computation. The two input
@@ -254,7 +263,7 @@ namespace Microsoft.FSharp.Collections
         /// <exception cref="System.ArgumentException">Thrown when the input arrays differ in length.</exception>
         /// <returns>The final state.</returns>
         [<CompiledName("FoldBack2")>]
-        val foldBack2<'T1,'T2,'State> : folder:('T1 -> 'T2 -> 'State -> 'State) -> array1:'T1[] -> array2:'T2[] -> state:'State -> 'State
+        val inline foldBack2<'T1,'T2,'State> : folder:('T1 -> 'T2 -> 'State -> 'State) -> array1:'T1[] -> array2:'T2[] -> state:'State -> 'State
 
         /// <summary>Gets an element from an array.</summary>
         /// <param name="array">The input array.</param>
@@ -296,14 +305,14 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array2">The second input array.</param>
         /// <exception cref="System.ArgumentException">Thrown when the input arrays differ in length.</exception>
         [<CompiledName("Iterate2")>]
-        val iter2: action:('T1 -> 'T2 -> unit) -> array1:'T1[] -> array2:'T2[] -> unit
+        val inline iter2: action:('T1 -> 'T2 -> unit) -> array1:'T1[] -> array2:'T2[] -> unit
 
         /// <summary>Applies the given function to each element of the array. The integer passed to the
         /// function indicates the index of element.</summary>
         /// <param name="action">The function to apply to each index and element.</param>
         /// <param name="array">The input array.</param>
         [<CompiledName("IterateIndexed")>]
-        val iteri: action:(int -> 'T -> unit) -> array:'T[] -> unit
+        val inline iteri: action:(int -> 'T -> unit) -> array:'T[] -> unit
 
         /// <summary>Applies the given function to pair of elements drawn from matching indices in two arrays,
         /// also passing the index of the elements. The two arrays must have the same lengths, 
@@ -313,7 +322,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array2">The second input array.</param>
         /// <exception cref="System.ArgumentException">Thrown when the input arrays differ in length.</exception>
         [<CompiledName("IterateIndexed2")>]
-        val iteri2: action:(int -> 'T1 -> 'T2 -> unit) -> array1:'T1[] -> array2:'T2[] -> unit
+        val inline iteri2: action:(int -> 'T1 -> 'T2 -> unit) -> array1:'T1[] -> array2:'T2[] -> unit
 
         /// <summary>Returns the length of an array. You can also use property arr.Length.</summary>
         /// <param name="array">The input array.</param>
@@ -339,7 +348,7 @@ namespace Microsoft.FSharp.Collections
         /// <exception cref="System.ArgumentException">Thrown when the input arrays differ in length.</exception>
         /// <returns>The array of transformed elements.</returns>
         [<CompiledName("Map2")>]
-        val map2: mapping:('T1 -> 'T2 -> 'U) -> array1:'T1[] -> array2:'T2[] -> 'U[]
+        val inline map2: mapping:('T1 -> 'T2 -> 'U) -> array1:'T1[] -> array2:'T2[] -> 'U[]
 
         /// <summary>Builds a new collection whose elements are the results of applying the given function
         /// to the corresponding elements of the two collections pairwise, also passing the index of 
@@ -351,7 +360,7 @@ namespace Microsoft.FSharp.Collections
         /// <exception cref="System.ArgumentException">Thrown when the input arrays differ in length.</exception>
         /// <returns>The array of transformed elements.</returns>
         [<CompiledName("MapIndexed2")>]
-        val mapi2: mapping:(int -> 'T1 -> 'T2 -> 'U) -> array1:'T1[] -> array2:'T2[] -> 'U[]
+        val inline mapi2: mapping:(int -> 'T1 -> 'T2 -> 'U) -> array1:'T1[] -> array2:'T2[] -> 'U[]
 
         /// <summary>Builds a new array whose elements are the results of applying the given function
         /// to each of the elements of the array. The integer index passed to the
@@ -360,7 +369,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array">The input array.</param>
         /// <returns>The array of transformed elements.</returns>
         [<CompiledName("MapIndexed")>]
-        val mapi: mapping:(int -> 'T -> 'U) -> array:'T[] -> 'U[]
+        val inline mapi: mapping:(int -> 'T -> 'U) -> array:'T[] -> 'U[]
 
         /// <summary>Returns the greatest of all elements of the array, compared via Operators.max on the function result.</summary>
         ///
@@ -439,7 +448,7 @@ namespace Microsoft.FSharp.Collections
         /// <exception cref="System.ArgumentException">Thrown when the input array is empty.</exception>
         /// <returns>The final result of the redcutions.</returns>
         [<CompiledName("Reduce")>]
-        val reduce: reduction:('T -> 'T -> 'T) -> array:'T[] -> 'T
+        val inline reduce: reduction:('T -> 'T -> 'T) -> array:'T[] -> 'T
 
         /// <summary>Applies a function to each element of the array, threading an accumulator argument
         /// through the computation. If the input function is <c>f</c> and the elements are <c>i0...iN</c> 
@@ -450,7 +459,7 @@ namespace Microsoft.FSharp.Collections
         /// <exception cref="System.ArgumentException">Thrown when the input array is empty.</exception>
         /// <returns>The final result of the reductions.</returns>
         [<CompiledName("ReduceBack")>]
-        val reduceBack: reduction:('T -> 'T -> 'T) -> array:'T[] -> 'T
+        val inline reduceBack: reduction:('T -> 'T -> 'T) -> array:'T[] -> 'T
 
         /// <summary>Returns a new array with the elements in reverse order.</summary>
         /// <param name="array">The input array.</param>
@@ -464,7 +473,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array">The input array.</param>
         /// <returns>The array of state values.</returns>
         [<CompiledName("Scan")>]
-        val scan<'T,'State> : folder:('State -> 'T -> 'State) -> state:'State -> array:'T[] -> 'State[]
+        val inline scan<'T,'State> : folder:('State -> 'T -> 'State) -> state:'State -> array:'T[] -> 'State[]
 
         /// <summary>Like <c>foldBack</c>, but return both the intermediary and final results.</summary>
         /// <param name="folder">The function to update the state given the input elements.</param>
@@ -472,7 +481,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="state">The initial state.</param>
         /// <returns>The array of state values.</returns>
         [<CompiledName("ScanBack")>]
-        val scanBack<'T,'State> : folder:('T -> 'State -> 'State) -> array:'T[] -> state:'State -> 'State[]
+        val inline scanBack<'T,'State> : folder:('T -> 'State -> 'State) -> array:'T[] -> state:'State -> 'State[]
 
         /// <summary>Sets an element of an array.</summary>
         /// <param name="array">The input array.</param>
@@ -580,7 +589,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array">The input array.</param>
         /// <returns>The first element that satisfies the predicate, or None.</returns>
         [<CompiledName("TryFind")>]
-        val tryFind: predicate:('T -> bool) -> array:'T[] -> 'T option
+        val inline tryFind: predicate:('T -> bool) -> array:'T[] -> 'T option
 
         /// <summary>Returns the index of the first element in the array
         /// that satisfies the given predicate.</summary>
@@ -588,7 +597,7 @@ namespace Microsoft.FSharp.Collections
         /// <param name="array">The input array.</param>
         /// <returns>The index of the first element that satisfies the predicate, or None.</returns>
         [<CompiledName("TryFindIndex")>]
-        val tryFindIndex : predicate:('T -> bool) -> array:'T[] -> int option
+        val inline tryFindIndex : predicate:('T -> bool) -> array:'T[] -> int option
 
         /// <summary>Splits an array of pairs into two arrays.</summary>
         /// <param name="array">The input array.</param>
